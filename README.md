@@ -335,7 +335,7 @@ tor-threat-hunt/
 
 <div align="center">
 
-**[LinkedIn](https://linkedin.com/in/yourprofile)** | **[GitHub](https://github.com/yourusername)** | **[Email](mailto:your.email@example.com)**
+**[LinkedIn](https://www.linkedin.com/in/abdullah-al-rafi03/)** | **[GitHub](https://github.com/rafi03)** | **[Email](mailto:alrafikp@gmail.com)**
 
 *Passionate about cybersecurity and always eager to discuss threat hunting strategies!*
 
