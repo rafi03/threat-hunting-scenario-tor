@@ -68,7 +68,7 @@ Contained
 - **Platform**: Microsoft Defender for Endpoint
 - **Query Language**: Kusto Query Language (KQL)
 - **Data Sources**: DeviceFileEvents, DeviceProcessEvents, DeviceNetworkEvents
-- **Target OS**: Windows 10 Enterprise
+- **Target OS**: Windows 11 Enterprise
 
 ---
 
