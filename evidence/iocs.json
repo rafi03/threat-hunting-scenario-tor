@@ -1,0 +1,39 @@
+{
+  "incident": {
+    "id": "TOR-2025-001",
+    "date": "2025-07-26",
+    "severity": "HIGH",
+    "status": "CONTAINED"
+  },
+  "files": [
+    {
+      "name": "tor-browser-windows-x86_64-portable-14.5.5.exe",
+      "sha256": "6d38a13c6a5865b373ef1e1ffcd31b3f359abe896571d27fa666ce71c486a40d",
+      "type": "installer"
+    },
+    {
+      "name": "firefox.exe",
+      "sha256": "6872f0df504c7a4a308caa86a73c62a51bb6e573107681ab60edbd72126df766",
+      "type": "tor_browser"
+    }
+  ],
+  "network": [
+    {
+      "ip": "192.87.28.82",
+      "port": 9001,
+      "type": "tor_relay"
+    },
+    {
+      "ip": "127.0.0.1",
+      "port": 9150,
+      "type": "local_proxy"
+    }
+  ],
+  "processes": [
+    {
+      "name": "tor.exe",
+      "cmdline": "tor.exe",
+      "path": "C:\\Users\\Rafi03\\Desktop\\Tor Browser\\Browser\\TorBrowser\\Tor\\tor.exe"
+    }
+  ]
+}

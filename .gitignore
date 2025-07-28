@@ -1,0 +1,20 @@
+# Data files
+*.log
+*.pcap
+*.evtx
+
+# Temporary files
+*.tmp
+~*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Sensitive data
+*secret*
+*password*

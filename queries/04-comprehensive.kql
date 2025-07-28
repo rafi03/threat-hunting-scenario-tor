@@ -1,0 +1,26 @@
+// Comprehensive TOR Detection
+// Combines all detection methods
+
+let TimeWindow = 7d;
+let Device = "rafi-win";
+
+// Combine all TOR indicators
+union 
+(DeviceFileEvents 
+    | where DeviceName == Device and FileName contains "tor"
+    | extend EventType = "File", Severity = 5),
+(DeviceProcessEvents 
+    | where DeviceName == Device and FileName in~ ("tor.exe", "firefox.exe")
+    | extend EventType = "Process", Severity = 8),
+(DeviceNetworkEvents 
+    | where DeviceName == Device and RemotePort in (9001, 9050, 9150)
+    | extend EventType = "Network", Severity = 10)
+| where Timestamp > ago(TimeWindow)
+| summarize 
+    EventCount = count(),
+    MaxSeverity = max(Severity),
+    EventTypes = make_set(EventType),
+    TimeSpan = strcat(min(Timestamp), " - ", max(Timestamp))
+    by DeviceName, bin(Timestamp, 1h)
+| extend ThreatScore = EventCount * MaxSeverity
+| order by ThreatScore desc

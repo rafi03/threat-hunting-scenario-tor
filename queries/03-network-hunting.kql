@@ -1,0 +1,23 @@
+// TOR Network Communication Detection
+// Hunts for TOR network connections
+
+let TorPorts = dynamic([9001, 9030, 9040, 9050, 9051, 9150]);
+let TorProcesses = dynamic(["tor.exe", "firefox.exe"]);
+
+DeviceNetworkEvents
+| where DeviceName == "rafi-win"
+| where RemotePort in (TorPorts) or InitiatingProcessFileName in~ (TorProcesses)
+| where InitiatingProcessAccountName != "system"
+| extend 
+    ConnectionType = case(
+        RemotePort == 9001, "TOR Relay",
+        RemotePort == 9150, "SOCKS Proxy",
+        RemoteIP startswith "127.", "Local Proxy",
+        "Unknown TOR"
+    )
+| summarize 
+    TotalConnections = count(),
+    UniqueIPs = dcount(RemoteIP),
+    FirstConnection = min(Timestamp),
+    LastConnection = max(Timestamp)
+    by InitiatingProcessFileName, ConnectionType, RemotePort

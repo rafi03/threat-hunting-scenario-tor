@@ -1,0 +1,16 @@
+// TOR Process Execution Analysis
+// Identifies TOR installation and execution patterns
+
+DeviceProcessEvents
+| where DeviceName == "rafi-win"
+| where FileName has_any("tor.exe", "firefox.exe") 
+    or ProcessCommandLine contains "tor-browser"
+| extend 
+    ThreatLevel = case(
+        ProcessCommandLine contains "/S", "HIGH - Silent Install",
+        FileName == "tor.exe", "CRITICAL - TOR Active",
+        FileName == "firefox.exe" and FolderPath contains "Tor", "HIGH - TOR Browser",
+        "MEDIUM"
+    )
+| project Timestamp, AccountName, FileName, ProcessCommandLine, ThreatLevel, SHA256
+| order by Timestamp asc

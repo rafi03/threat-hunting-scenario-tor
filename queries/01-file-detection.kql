@@ -1,0 +1,21 @@
+// TOR File Detection Query
+// Detects TOR-related file operations
+
+let TimeRange = 7d;
+let TargetDevice = "rafi-win";
+let TargetUser = "rafi03";
+
+DeviceFileEvents
+| where Timestamp > ago(TimeRange)
+| where DeviceName =~ TargetDevice
+| where InitiatingProcessAccountName =~ TargetUser
+| where FileName contains "tor" or FolderPath contains "Tor Browser"
+| extend 
+    RiskScore = case(
+        FileName endswith ".exe" and ActionType == "FileCreated", 10,
+        FileName contains "tor-browser", 8,
+        ActionType == "FileRenamed", 5,
+        3
+    )
+| project Timestamp, ActionType, FileName, FolderPath, SHA256, RiskScore
+| order by RiskScore desc, Timestamp asc
