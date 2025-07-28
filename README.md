@@ -340,11 +340,3 @@ tor-threat-hunt/
 *Passionate about cybersecurity and always eager to discuss threat hunting strategies!*
 
 </div>
-
----
-
-<div align="center">
-
-**🛡️ Protecting Organizations Through Proactive Threat Detection 🛡️**
-
-</div>
