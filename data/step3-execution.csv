@@ -1,0 +1,3 @@
+﻿AccountName,ProcessType,FileName,ProcessCount,FirstSeen,LastSeen
+rafi03,TOR Browser,firefox.exe,17,"Jul 26, 2025 12:01:01 PM","Jul 26, 2025 12:43:25 PM"
+rafi03,TOR Service,tor.exe,1,"Jul 26, 2025 12:01:09 PM","Jul 26, 2025 12:01:09 PM"

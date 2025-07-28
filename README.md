@@ -30,12 +30,12 @@ Detection Time
 </td>
 <td align="center">
 <h3>📊</h3>
-<b>52 Events</b><br>
+<b>116 Events</b><br>
 Analyzed
 </td>
 <td align="center">
 <h3>🎯</h3>
-<b>15 IOCs</b><br>
+<b>11 Network IOCs</b><br>
 Identified
 </td>
 <td align="center">
@@ -68,7 +68,7 @@ Contained
 - **Platform**: Microsoft Defender for Endpoint
 - **Query Language**: Kusto Query Language (KQL)
 - **Data Sources**: DeviceFileEvents, DeviceProcessEvents, DeviceNetworkEvents
-- **Target OS**: Windows 11 Enterprise
+- **Target OS**: Windows 10 Enterprise
 
 ---
 
@@ -112,7 +112,7 @@ DeviceFileEvents
 | order by RiskScore desc, Timestamp asc
 ```
 
-**Key Discovery**: TOR installer `tor-browser-windows-x86_64-portable-14.5.5.exe` detected with risk score 8/10, followed by multiple TOR component files.
+**Key Discovery**: Detected **102 file events** with TOR installer `tor-browser-windows-x86_64-portable-14.5.5.exe` scoring highest risk (10/10). Multiple TOR components extracted to Desktop location.
 
 ![File Events](evidence/screenshots/file-events.png)
 
@@ -137,7 +137,7 @@ DeviceProcessEvents
 | project Timestamp, AccountName, FileName, ProcessCommandLine, ThreatLevel, SHA256
 ```
 
-**Critical Finding**: Silent installation detected with ThreatLevel: "HIGH - Silent Install" using `/S` parameter at 12:00:04 PM.
+**Critical Finding**: **Silent installation confirmed** with ThreatLevel: "HIGH - Silent Install" using `/S` parameter. Single installation event captured with full command line logging.
 
 ![Installation Process](evidence/screenshots/installation-process.png)
 
@@ -168,7 +168,10 @@ DeviceProcessEvents
 | order by FirstSeen asc
 ```
 
-**Confirmation**: TOR Browser (firefox.exe) launched at 12:01:01 PM, followed by 3 TOR service processes.
+**Confirmation**: **2 distinct process types** identified:
+- TOR Browser (firefox.exe): 1 process instance
+- TOR Service (tor.exe): 1 process instance
+- Total execution timespan: FirstSeen to LastSeen captured
 
 ![Process Execution](evidence/screenshots/process-execution.png)
 
@@ -202,7 +205,11 @@ DeviceNetworkEvents
     by InitiatingProcessFileName, ConnectionType, RemotePort
 ```
 
-**Network Breach**: 18 total connections attempted, 5 successful. Primary TOR relay confirmed at `192.87.28.82:9001`.
+**Network Breach**: **11 distinct network patterns** detected across multiple connection types:
+- TOR Relay connections confirmed
+- SOCKS Proxy activity identified
+- Multiple successful connections established
+- Unique IP addresses contacted across different ports (9001, 9150, etc.)
 
 ![Network Connections](evidence/screenshots/network-connections.png)
 
@@ -228,19 +235,27 @@ DeviceNetworkEvents
 
 ## 🎯 Key Indicators of Compromise (IOCs)
 
-### File Indicators
-| Type | Value | Context |
-|------|-------|---------|
-| **SHA256** | `6d38a13c6a5865b373ef1e1ffcd31b3f359abe896571d27fa666ce71c486a40d` | TOR Installer |
-| **SHA256** | `6872f0df504c7a4a308caa86a73c62a51bb6e573107681ab60edbd72126df766` | Firefox.exe (TOR) |
-| **Path** | `C:\Users\Rafi03\Desktop\Tor Browser\` | Installation Location |
+### File Indicators (102 Events Detected)
+| Type | Value | Risk Score |
+|------|-------|------------|
+| **Installer** | `tor-browser-windows-x86_64-portable-14.5.5.exe` | 10/10 |
+| **SHA256** | `6d38a13c6a5865b373ef1e1ffcd31b3f359abe896571d27fa666ce71c486a40d` | Critical |
+| **Location** | `C:\Users\Rafi03\Desktop\Tor Browser\` | High Risk |
+| **File Count** | 102 TOR-related files created/modified | Suspicious |
 
-### Network Indicators
-| IP Address | Port | Type |
-|------------|------|------|
-| 192.87.28.82 | 9001 | TOR Relay |
-| 127.0.0.1 | 9150 | Local SOCKS |
-| 45.141.215.63 | 9100 | TOR Node (Failed) |
+### Process Indicators (2 Process Types)
+| Process | Type | Count |
+|---------|------|-------|
+| firefox.exe | TOR Browser | 1 |
+| tor.exe | TOR Service | 1 |
+
+### Network Indicators (11 Connection Patterns)
+| Connection Type | Ports Used | Status |
+|-----------------|------------|--------|
+| TOR Relay | 9001 | Active |
+| SOCKS Proxy | 9150 | Active |
+| Local Proxy | 127.0.0.1 | Active |
+| Multiple IPs | Various | Confirmed |
 
 ---
 
